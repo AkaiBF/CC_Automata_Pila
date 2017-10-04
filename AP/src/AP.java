@@ -16,16 +16,21 @@ public class AP {
 		
 	}
 	public void step() {
+		// Guardamos todas las transiciones posibles actualmente y su estado actual
+		for(Transition i: getAllTransitions()) {
+			if(i.hasPath(getCurrentState(), getWord(), (NoTerminal) getStack().seeTop()))
+				getTransitionStack().add(i);
+		}
 		if(!getTransitionStack().isEmpty()) {
-			// Si es posible una transición actual
-			if(getTransitionStack().get(getTransitionStack().size() - 1).hasPath(getCurrentState(), getWord(), (NoTerminal) getStack().seeTop())) {
-				// Registramos todas las transiciones actuales
-				for(Transition i: getAllTransitions()) {
-					if(i.hasPath(getCurrentState(), getWord(), (NoTerminal) getStack().seeTop()))
-						getTransitionStack().add(i);
-				}
-			}
+			
 			// Realizamos la última transición disponible
+			// Si es posible una transición actual
+						
+			if(getTransitionStack().get(getTransitionStack().size() - 1).hasPath(getCurrentState(), getWord(), (NoTerminal) getStack().seeTop())) {
+							
+			}
+			
+			// Realizamos la transicion
 			// Seteamos estado a siguiente
 			setCurrentState(getTransitionStack().get(getTransitionStack().size() - 1).getNextState());
 			// Borramos el terminal

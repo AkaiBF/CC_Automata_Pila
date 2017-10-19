@@ -13,7 +13,7 @@ public class AP {
 	private ArrayList<Transition> transitionStack;
 	private State currentState;
 	
-	public AP(ArrayList<NoTerminal> noTerminales, ArrayList<Terminal> terminales, ArrayList<State> states, ArrayList<Transition> allTransitions, Word word {
+	public AP(ArrayList<NoTerminal> noTerminales, ArrayList<Terminal> terminales, ArrayList<State> states, ArrayList<Transition> allTransitions, Word word, State start) {
 		this.noTerminales = noTerminales;
 		this.terminales = terminales;
 		this.states = states;
@@ -22,16 +22,19 @@ public class AP {
 		this.stack = new Stack();
 		this.wordRegister = new ArrayList<Word>();
 		this.transitionStack = new ArrayList<Transition>();
+		this.currentState = start;
 	}
-	public void step() {
+	public void step(boolean traza) {
 		// Guardamos todas las transiciones posibles actualmente y su estado actual
 		for(Transition i: getAllTransitions()) {
 			if(i.hasPath(getCurrentState(), getWord(), (NoTerminal) getStack().seeTop())) {
 				getTransitionStack().add(i);
 				getWordRegister().add(getWord());
+			}
 		}
 		if(!getTransitionStack().isEmpty()) {
 			Transition transicion = getTransitionStack().get(getTransitionStack().size() - 1);
+			if(traza) System.out.println(transicion);
 			// Realizamos la última transición disponible
 			// Si es posible una transición actual
 			setCurrentState(transicion.getPrevState());
@@ -62,6 +65,25 @@ public class AP {
 		}
 	}
 	
+	public boolean emptyStack(boolean traza) {
+		while(!(getWord().getWord().isEmpty() && getTransitionStack().isEmpty())) {
+			step(traza);
+		}
+		if(getStack().getStack().isEmpty()) return true;
+		return false;
+	}
+	
+	public boolean finalState(boolean traza) {
+		while(!(getWord().getWord().isEmpty() && getTransitionStack().isEmpty())) {
+			step(traza);
+		}
+		return getCurrentState().isTerminal();
+	}
+	
+	public void setWord(Word word) {
+		this.word = word;
+		
+	}
 	public ArrayList<NoTerminal> getNoTerminales() {
 		return this.noTerminales;
 	}

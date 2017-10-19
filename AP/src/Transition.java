@@ -18,6 +18,8 @@ public class Transition {
 	public boolean hasPath(State prevState, Word word, NoTerminal prevNoTerminal) {
 		if(prevState == getPrevState() && word.last() == getTerminal() && prevNoTerminal == getPrevNoTerminal())
 			return true;
+		if(prevState == getPrevState() && new Terminal(".") == getTerminal() && prevNoTerminal == getPrevNoTerminal())
+			return true;
 		return false;
 	}
 	
